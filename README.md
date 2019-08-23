@@ -26,6 +26,17 @@ Note: You can always re-authenticate later.
 ### Authentication
 <!-- run `crank cog:readme automatoninc/eloqua` to update -->
 <!-- authenticationDetails -->
+You will be asked for the following authentication details on installation.
+
+- **companyName**: Company Name
+- **username**: Username
+- **password**: Password
+
+```shell-session
+# Re-authenticate by running this
+$ crank cog:auth automatoninc/eloqua
+```
+<!-- authenticationDetailsEnd -->
 
 This Cog uses Basic Authentication to interact with Eloqua's REST API. You may
 want to create an API-specific user just for Crank.
@@ -36,6 +47,29 @@ Scenario files.
 
 <!-- run `crank cog:readme automatoninc/eloqua` to update -->
 <!-- stepDetails -->
+<h4 id="ContactFieldEquals">Check a field on an Eloqua contact</h4>
+
+- **Expression**: `the (?<field>.+) field on eloqua contact (?<email>.+) should be (?<expectedValue>.+)`
+- **Expected Data**:
+  - `email`: Contact's email address
+  - `field`: Field name to check
+  - `expectedValue`: Expected field value
+- **Step ID**: `ContactFieldEquals`
+
+<h4 id="CreateContact">Create an Eloqua contact</h4>
+
+- **Expression**: `create an eloqua contact`
+- **Expected Data**:
+  - `contact`: A map of field names to field values
+- **Step ID**: `CreateContact`
+
+<h4 id="DeleteContact">Delete an Eloqua contact</h4>
+
+- **Expression**: `delete the (?<email>.+) eloqua contact`
+- **Expected Data**:
+  - `email`: Contact's email address
+- **Step ID**: `DeleteContact`
+<!-- stepDetailsEnd -->
 
 ## Development and Contributing
 Pull requests are welcome. For major changes, please open an issue first to
