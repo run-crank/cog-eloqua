@@ -1,0 +1,63 @@
+{
+  "name": "cog-eloqua",
+  "version": "0.1.0",
+  "description": "Eloqua Cog for use with Crank",
+  "license": "MIT",
+  "cog": {
+    "name": "automatoninc/eloqua",
+    "label": "Eloqua",
+    "homepage": "https://github.com/run-crank/cog-eloqua",
+    "authHelpUrl": "https://github.com/run-crank/cog-eloqua#authentication"
+  },
+  "scripts": {
+    "build-docker": "docker build -t automatoninc/eloqua:$npm_package_version -t automatoninc/eloqua:latest .",
+    "build-proto": "scripts/build-proto.sh",
+    "build-ts": "tsc",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "check-engine package.json && ts-node src/core/grpc-server.ts",
+    "test": "nyc mocha -r ts-node/register test/*.ts test/**/*.ts",
+    "version": "crank cog:readme automatoninc/eloqua && git add README.md"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "test/**/*.ts",
+      "**/*.js",
+      "src/core/grpc-server.ts"
+    ],
+    "reporter": [
+      "html",
+      "text"
+    ],
+    "all": true
+  },
+  "engines": {
+    "node": ">= 10.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/google-protobuf": "^3.2.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.0.4",
+    "chai": "^4.2.0",
+    "check-engine": "^1.8.1",
+    "grpc-tools": "^1.7.3",
+    "grpc_tools_node_protoc_ts": "^2.5.1",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
+    "sinon-chai": "^3.3.0",
+    "ts-sinon": "^1.0.17",
+    "tslint": "^5.17.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.5.1"
+  },
+  "dependencies": {
+    "eloqua": "^1.3.0",
+    "google-protobuf": "^3.8.0",
+    "grpc": "^1.21.1",
+    "ts-node": "^8.3.0"
+  }
+}

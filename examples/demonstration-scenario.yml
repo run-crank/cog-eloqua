@@ -1,0 +1,13 @@
+scenario: Demonstrate the Eloqua Cog
+description: A contrived scenario that proves out this Cog at a basic level.
+
+steps:
+- step: Given I create an Eloqua contact
+  data:
+    contact:
+      emailAddress: atommy@example.com
+      firstName: Atoma
+      lastName: Tommy
+- step: Then the firstName field on eloqua contact atommy@example.com should be Atoma
+- step: Then the lastName field on eloqua contact atommy@example.com should be Tommy
+- step: Finally, delete the atommy@example.com Eloqua contact 
