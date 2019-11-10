@@ -26,11 +26,13 @@ Note: You can always re-authenticate later.
 ### Authentication
 <!-- run `crank cog:readme automatoninc/eloqua` to update -->
 <!-- authenticationDetails -->
-You will be asked for the following authentication details on installation.
+You will be asked for the following authentication details on installation. To avoid prompts in a CI/CD context, you can provide the same details as environment variables.
 
-- **companyName**: Company Name
-- **username**: Username
-- **password**: Password
+| Field | Install-Time Environment Variable | Description |
+| --- | --- | --- |
+| **companyName** | `CRANK_AUTOMATONINC_ELOQUA__COMPANYNAME` | Company Name |
+| **username** | `CRANK_AUTOMATONINC_ELOQUA__USERNAME` | Username |
+| **password** | `CRANK_AUTOMATONINC_ELOQUA__PASSWORD` | Password |
 
 ```shell-session
 # Re-authenticate by running this
@@ -47,28 +49,11 @@ Scenario files.
 
 <!-- run `crank cog:readme automatoninc/eloqua` to update -->
 <!-- stepDetails -->
-<h4 id="ContactFieldEquals">Check a field on an Eloqua contact</h4>
-
-- **Expression**: `the (?<field>.+) field on eloqua contact (?<email>.+) should be (?<expectedValue>.+)`
-- **Expected Data**:
-  - `email`: Contact's email address
-  - `field`: Field name to check
-  - `expectedValue`: Expected field value
-- **Step ID**: `ContactFieldEquals`
-
-<h4 id="CreateContact">Create an Eloqua contact</h4>
-
-- **Expression**: `create an eloqua contact`
-- **Expected Data**:
-  - `contact`: A map of field names to field values
-- **Step ID**: `CreateContact`
-
-<h4 id="DeleteContact">Delete an Eloqua contact</h4>
-
-- **Expression**: `delete the (?<email>.+) eloqua contact`
-- **Expected Data**:
-  - `email`: Contact's email address
-- **Step ID**: `DeleteContact`
+| Name (ID) | Expression | Expected Data |
+| --- | --- | --- |
+| **Check a field on an Eloqua contact**<br>(`ContactFieldEquals`) | `the (?<field>.+) field on eloqua contact (?<email>.+) should be (?<expectedValue>.+)` | - `email`: Contact's email address <br><br>- `field`: Field name to check <br><br>- `expectedValue`: Expected field value |
+| **Create an Eloqua contact**<br>(`CreateContact`) | `create an eloqua contact` | - `contact`: A map of field names to field values |
+| **Delete an Eloqua contact**<br>(`DeleteContact`) | `delete the (?<email>.+) eloqua contact` | - `email`: Contact's email address |
 <!-- stepDetailsEnd -->
 
 ## Development and Contributing
