@@ -27,7 +27,7 @@ describe('ContactFieldEquals', () => {
     const stepDef: StepDefinition = stepUnderTest.getDefinition();
     expect(stepDef.getStepId()).to.equal('ContactFieldEquals');
     expect(stepDef.getName()).to.equal('Check a field on an Eloqua contact');
-    expect(stepDef.getExpression()).to.equal('the (?<field>.+) field on eloqua contact (?<email>.+) should be (?<expectedValue>.+)');
+    expect(stepDef.getExpression()).to.equal('the (?<field>.+) field on eloqua contact (?<email>.+) should (?<operator>be less than|be greater than|be|contain|not be|not contain) (?<expectedValue>.+)');
     expect(stepDef.getType()).to.equal(StepDefinition.Type.VALIDATION);
   });
 
