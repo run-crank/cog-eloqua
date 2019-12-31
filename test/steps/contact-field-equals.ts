@@ -47,6 +47,11 @@ describe('ContactFieldEquals', () => {
     expect(email.optionality).to.equal(FieldDefinition.Optionality.REQUIRED);
     expect(email.type).to.equal(FieldDefinition.Type.EMAIL);
 
+    // Operator field
+    const operator: any = fields.filter(f => f.key === 'operator')[0];
+    expect(operator.optionality).to.equal(FieldDefinition.Optionality.OPTIONAL);
+    expect(operator.type).to.equal(FieldDefinition.Type.STRING);
+
     // Expected Value field
     const expectedValue: any = fields.filter(f => f.key === 'expectedValue')[0];
     expect(expectedValue.optionality).to.equal(FieldDefinition.Optionality.REQUIRED);
@@ -116,6 +121,38 @@ describe('ContactFieldEquals', () => {
     // Stub a response that throws any exception.
     apiClientStub.searchContactsByEmail.throws();
     protoStep.setData(Struct.fromJavaScript({}));
+
+    const response: RunStepResponse = await stepUnderTest.executeStep(protoStep);
+    expect(response.getOutcome()).to.equal(RunStepResponse.Outcome.ERROR);
+  });
+
+  it('should respond with error if comparator throws unknown operator error', async () => {
+    // Stub a response with valid content.
+    const expectedContact: any = {someField: 'Expected Value'};
+    apiClientStub.searchContactsByEmail.resolves({elements: [expectedContact]});
+
+    protoStep.setData(Struct.fromJavaScript({
+      field: 'someField',
+      expectedValue: 'Any Value',
+      operator: 'unknown operator',
+      email: 'anything@example.com',
+    }));
+
+    const response: RunStepResponse = await stepUnderTest.executeStep(protoStep);
+    expect(response.getOutcome()).to.equal(RunStepResponse.Outcome.ERROR);
+  });
+
+  it('should respond with error if comparator throws invalid operand error', async () => {
+    // Stub a response with valid content.
+    const expectedContact: any = {someField: 'Expected Value'};
+    apiClientStub.searchContactsByEmail.resolves({elements: [expectedContact]});
+
+    protoStep.setData(Struct.fromJavaScript({
+      field: 'someField',
+      expectedValue: 'Non-numeric value',
+      operator: 'be greater than',
+      email: 'anything@example.com',
+    }));
 
     const response: RunStepResponse = await stepUnderTest.executeStep(protoStep);
     expect(response.getOutcome()).to.equal(RunStepResponse.Outcome.ERROR);
