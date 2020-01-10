@@ -51,7 +51,7 @@ Scenario files.
 <!-- stepDetails -->
 | Name (ID) | Expression | Expected Data |
 | --- | --- | --- |
-| **Check a field on an Eloqua contact**<br>(`ContactFieldEquals`) | `the (?<field>.+) field on eloqua contact (?<email>.+) should (?<operator>be less than|be greater than|be|contain|not be|not contain) (?<expectedValue>.+)` | - `email`: Contact's email address <br><br>- `field`: Field name to check <br><br>- `operator`: Check Logic (be, not be, contain, not contain, be greater than, or be less than) <br><br>- `expectedValue`: Expected field value |
+| **Check a field on an Eloqua contact**<br>(`ContactFieldEquals`) | `the (?<field>.+) field on eloqua contact (?<email>.+) should (?<operator>be less than\|be greater than\|be\|contain\|not be\|not contain) (?<expectedValue>.+)` | - `email`: Contact's email address <br><br>- `field`: Field name to check <br><br>- `operator`: Check Logic (be, not be, contain, not contain, be greater than, or be less than) <br><br>- `expectedValue`: Expected field value |
 | **Create an Eloqua contact**<br>(`CreateContact`) | `create an eloqua contact` | - `contact`: A map of field names to field values |
 | **Delete an Eloqua contact**<br>(`DeleteContact`) | `delete the (?<email>.+) eloqua contact` | - `email`: Contact's email address |
 <!-- stepDetailsEnd -->
