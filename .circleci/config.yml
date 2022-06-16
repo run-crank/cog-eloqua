@@ -27,17 +27,17 @@ executors:
     environment:
       IMAGE_NAME: automatoninc/eloqua
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: cimg/base:stable
   docker-user:
     environment:
       IMAGE_NAME: automatoninc/eloqua
     machine:
-      image: circleci/classic:latest
+      image: ubuntu-2004:202201-02
 
 jobs:
   test:
     docker:
-      - image: circleci/node:12
+      - image: cimg/node:12.0
     steps:
       - checkout
       - restore_cache:
