@@ -52,7 +52,6 @@ export class DiscoverContact extends BaseStep implements StepInterface {
     }
 
     const records = this.createRecords(apiRes.elements[0], stepData['__stepOrder']);
-
     try {
       if (apiRes.elements.length === 0) {
         return this.fail('No contact found for email %s', [email]);

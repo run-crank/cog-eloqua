@@ -87,10 +87,7 @@ export class ContactFieldEquals extends BaseStep implements StepInterface {
         return this.error('The %s field does not exist on contact %s', [field, email], records);
       } else if (util.compare(operator, apiRes.elements[0][field], expectedValue)) {
         // If the value of the field meets expectations, pass.
-        return this.pass(util.operatorSuccessMessages[operator], [
-          field,
-          expectedValue,
-        ], records);
+        return this.pass(util.operatorSuccessMessages[operator], [field, expectedValue], records);
       } else {
         // If the value of the field does not match expectations, fail.
         return this.fail(util.operatorFailMessages[operator], [
