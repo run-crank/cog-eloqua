@@ -2,7 +2,7 @@
 /*tslint:disable:triple-equals*/
 
 import { BaseStep, Field, StepInterface, ExpectedRecord } from '../core/base-step';
-import { FieldDefinition, RunStepResponse, Step, StepDefinition, RecordDefinition } from '../proto/cog_pb';
+import { FieldDefinition, RunStepResponse, Step, StepDefinition, RecordDefinition, StepRecord } from '../proto/cog_pb';
 
 /**
  * Note: the class name here becomes this step's stepId.
@@ -51,15 +51,26 @@ export class DiscoverContact extends BaseStep implements StepInterface {
       ]);
     }
 
+    const records = this.createRecords(apiRes.elements[0], stepData['__stepOrder']);
+
     try {
       if (apiRes.elements.length === 0) {
         return this.fail('No contact found for email %s', [email]);
       } else {
-        return this.pass('Successfully Discovered fields on Eloqua contact', [], [this.keyValue('discoverContact', 'Discovered Contact', apiRes.elements[0])]);
+        return this.pass('Successfully Discovered fields on Eloqua contact', [], records);
       }
     } catch (e) {
       return this.error('There was an error checking the contact: %s', [e.message]);
     }
+  }
+
+  public createRecords(contact, stepOrder = 1): StepRecord[] {
+    const records = [];
+    // Base Record
+    records.push(this.keyValue('discoverContact', 'Discovered Contact', contact));
+    // Ordered Record
+    records.push(this.keyValue(`discoverContact.${stepOrder}`, `Discovered Contact from Step ${stepOrder}`, contact));
+    return records;
   }
 
 }

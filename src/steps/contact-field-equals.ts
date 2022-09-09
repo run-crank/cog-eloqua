@@ -2,7 +2,7 @@
 /*tslint:disable:triple-equals*/
 
 import { BaseStep, Field, StepInterface } from '../core/base-step';
-import { FieldDefinition, RunStepResponse, Step, StepDefinition } from '../proto/cog_pb';
+import { FieldDefinition, RunStepResponse, Step, StepDefinition, StepRecord } from '../proto/cog_pb';
 import * as util from '@run-crank/utilities';
 
 /**
@@ -78,18 +78,19 @@ export class ContactFieldEquals extends BaseStep implements StepInterface {
     }
 
     try {
+      const records = this.createRecords(apiRes.elements[0], stepData['__stepOrder']);
       if (apiRes.elements.length === 0) {
         // If no results were found, return an error.
-        return this.error('No contact found for email %s', [email]);
+        return this.error('No contact found for email %s', [email], records);
       } else if (!apiRes.elements[0].hasOwnProperty(field)) {
         // If the given field does not exist on the contact, return an error.
-        return this.error('The %s field does not exist on contact %s', [field, email]);
+        return this.error('The %s field does not exist on contact %s', [field, email], records);
       } else if (util.compare(operator, apiRes.elements[0][field], expectedValue)) {
         // If the value of the field meets expectations, pass.
         return this.pass(util.operatorSuccessMessages[operator], [
           field,
           expectedValue,
-        ]);
+        ], records);
       } else {
         // If the value of the field does not match expectations, fail.
         return this.fail(util.operatorFailMessages[operator], [
@@ -107,6 +108,15 @@ export class ContactFieldEquals extends BaseStep implements StepInterface {
       }
       return this.error('There was an error checking the contact field: %s', [e.message]);
     }
+  }
+
+  public createRecords(contact, stepOrder = 1): StepRecord[] {
+    const records = [];
+    // Base Record
+    records.push(this.keyValue('contact', 'Checked Contact', contact));
+    // Ordered Record
+    records.push(this.keyValue(`contact.${stepOrder}`, `Checked Contact from Step ${stepOrder}`, contact));
+    return records;
   }
 
 }

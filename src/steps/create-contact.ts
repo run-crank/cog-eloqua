@@ -2,7 +2,7 @@
 /*tslint:disable:triple-equals*/
 
 import { BaseStep, Field, StepInterface } from '../core/base-step';
-import { FieldDefinition, RunStepResponse, Step, StepDefinition } from '../proto/cog_pb';
+import { FieldDefinition, RunStepResponse, Step, StepDefinition, StepRecord } from '../proto/cog_pb';
 
 /**
  * Note: the class name here becomes this step's stepId.
@@ -44,10 +44,20 @@ export class CreateContact extends BaseStep implements StepInterface {
 
     try {
       const result = await this.client.createContact(contact);
-      return this.pass('Successfully created Contact with ID %s', [result.id]);
+      const records = this.createRecords(contact, stepData['__stepOrder']);
+      return this.pass('Successfully created Contact with ID %s', [result.id], records);
     } catch (e) {
       return this.error('There was a problem creating the Contact. %s', [e.toString()]);
     }
+  }
+
+  public createRecords(contact, stepOrder = 1): StepRecord[] {
+    const records = [];
+    // Base Record
+    records.push(this.keyValue('contact', 'Created Contact', contact));
+    // Ordered Record
+    records.push(this.keyValue(`contact.${stepOrder}`, `Created Contact from Step ${stepOrder}`, contact));
+    return records;
   }
 
 }
