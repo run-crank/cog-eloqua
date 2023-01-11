@@ -2,6 +2,7 @@
 // file: cog.proto
 
 /* tslint:disable */
+/* eslint-disable */
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
@@ -79,6 +80,9 @@ export class StepDefinition extends jspb.Message {
     getName(): string;
     setName(value: string): void;
 
+    getHelp(): string;
+    setHelp(value: string): void;
+
     getType(): StepDefinition.Type;
     setType(value: StepDefinition.Type): void;
 
@@ -95,6 +99,15 @@ export class StepDefinition extends jspb.Message {
     setExpectedRecordsList(value: Array<RecordDefinition>): void;
     addExpectedRecords(value?: RecordDefinition, index?: number): RecordDefinition;
 
+    clearActionList(): void;
+    getActionList(): Array<string>;
+    setActionList(value: Array<string>): void;
+    addAction(value: string, index?: number): string;
+
+    getTargetObject(): string;
+    setTargetObject(value: string): void;
+
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): StepDefinition.AsObject;
     static toObject(includeInstance: boolean, msg: StepDefinition): StepDefinition.AsObject;
@@ -109,10 +122,13 @@ export namespace StepDefinition {
     export type AsObject = {
         stepId: string,
         name: string,
+        help: string,
         type: StepDefinition.Type,
         expression: string,
         expectedFieldsList: Array<FieldDefinition.AsObject>,
         expectedRecordsList: Array<RecordDefinition.AsObject>,
+        actionList: Array<string>,
+        targetObject: string,
     }
 
     export enum Type {
@@ -135,6 +151,12 @@ export class FieldDefinition extends jspb.Message {
     getDescription(): string;
     setDescription(value: string): void;
 
+    getHelp(): string;
+    setHelp(value: string): void;
+
+    getBulksupport(): boolean;
+    setBulksupport(value: boolean): void;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): FieldDefinition.AsObject;
@@ -152,6 +174,8 @@ export namespace FieldDefinition {
         optionality: FieldDefinition.Optionality,
         type: FieldDefinition.Type,
         description: string,
+        help: string,
+        bulksupport: boolean,
     }
 
     export enum Optionality {
@@ -224,6 +248,15 @@ export class RunStepRequest extends jspb.Message {
     getStep(): Step | undefined;
     setStep(value?: Step): void;
 
+    getRequestId(): string;
+    setRequestId(value: string): void;
+
+    getScenarioId(): string;
+    setScenarioId(value: string): void;
+
+    getRequestorId(): string;
+    setRequestorId(value: string): void;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): RunStepRequest.AsObject;
@@ -238,6 +271,9 @@ export class RunStepRequest extends jspb.Message {
 export namespace RunStepRequest {
     export type AsObject = {
         step?: Step.AsObject,
+        requestId: string,
+        scenarioId: string,
+        requestorId: string,
     }
 }
 
@@ -286,6 +322,7 @@ export class RunStepResponse extends jspb.Message {
     setRecordsList(value: Array<StepRecord>): void;
     addRecords(value?: StepRecord, index?: number): StepRecord;
 
+
     hasResponseData(): boolean;
     clearResponseData(): void;
     getResponseData(): google_protobuf_struct_pb.Struct | undefined;
@@ -307,6 +344,7 @@ export namespace RunStepResponse {
         outcome: RunStepResponse.Outcome,
         messageFormat: string,
         messageArgsList: Array<google_protobuf_struct_pb.Value.AsObject>,
+        recordsList: Array<StepRecord.AsObject>,
         responseData?: google_protobuf_struct_pb.Struct.AsObject,
     }
 
