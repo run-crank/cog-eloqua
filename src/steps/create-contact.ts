@@ -19,6 +19,8 @@ export class CreateContact extends BaseStep implements StepInterface {
    * Type of step (either Action or Validation).
    */
   protected stepType: StepDefinition.Type = StepDefinition.Type.ACTION;
+  protected actionList: string[] = ['create'];
+  protected targetObject: string = 'Contact';
 
   /**
    * A string that can be evaluated as an ECMAScript-compatible regular expression. This is used to

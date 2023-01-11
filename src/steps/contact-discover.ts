@@ -13,6 +13,8 @@ export class DiscoverContact extends BaseStep implements StepInterface {
   protected stepName: string = 'Discover fields on an Eloqua contact';
   protected stepExpression: string = 'discover fields on eloqua contact (?<email>.+)';
   protected stepType: StepDefinition.Type = StepDefinition.Type.ACTION;
+  protected actionList: string[] = ['discover'];
+  protected targetObject: string = 'Contact';
 
   protected expectedFields: Field[] = [{
     field: 'email',

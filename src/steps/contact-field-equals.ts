@@ -20,6 +20,8 @@ export class ContactFieldEquals extends BaseStep implements StepInterface {
    * Type of step (either Action or Validation).
    */
   protected stepType: StepDefinition.Type = StepDefinition.Type.VALIDATION;
+  protected actionList: string[] = ['check'];
+  protected targetObject: string = 'Contact';
 
   /**
    * A string that can be evaluated as an ECMAScript-compatible regular expression. This is used to
