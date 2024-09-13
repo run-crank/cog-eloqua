@@ -15,8 +15,8 @@
 # In order for Docker publishing to work, you will need to do the following:
 #
 # - Set up a Circle CI context called `docker-creds-to-publish-cogs`
-# - In this context, add `DOCKERHUB_USERNAME` and `DOCKERHUB_PASS` environment
-#   variables, using credentials that can push to `automatoninc/eloqua`
+# - In this context, add `DOCKERHUB_SM_USERNAME` and `DOCKERHUB_PASS` environment
+#   variables, using credentials that can push to `stackmoxie/eloqua`
 #
 # @see https://circleci.com/docs/2.0/contexts/
 ##
@@ -25,12 +25,12 @@ version: 2.1
 executors:
   docker-publisher:
     environment:
-      IMAGE_NAME: automatoninc/eloqua
+      IMAGE_NAME: stackmoxie/eloqua
     docker:
       - image: cimg/base:stable
   docker-user:
     environment:
-      IMAGE_NAME: automatoninc/eloqua
+      IMAGE_NAME: stackmoxie/eloqua
     machine:
       image: ubuntu-2004:202201-02
 
@@ -113,10 +113,17 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_SM_USERNAME" --password-stdin
             IMAGE_TAG="dev-v${CIRCLE_BUILD_NUM}"
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
             docker push $IMAGE_NAME:$IMAGE_TAG
+      - run:
+          name: Publish Docker Image to Azure Container Registry (ACR)
+          command: |
+            echo "$AZURE_ACR_PASSWORD" | docker login "$AZURE_ACR_NAME.azurecr.io" --username "$AZURE_ACR_USERNAME" --password-stdin
+            ACR_IMAGE_TAG="$AZURE_ACR_NAME.azurecr.io/$IMAGE_NAME:dev-v${CIRCLE_BUILD_NUM}"
+            docker tag $IMAGE_NAME:latest $ACR_IMAGE_TAG
+            docker push $ACR_IMAGE_TAG
 
   publish-tag:
     executor: docker-publisher
@@ -130,7 +137,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_SM_USERNAME" --password-stdin
             IMAGE_TAG=${CIRCLE_TAG/v/''}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
             docker push $IMAGE_NAME:latest
